@@ -11,6 +11,24 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', 'HomeController@index')
+    ->name('home');
+
+Route::group([
+    'prefix' => '/news/rubrics',
+    'as' => 'news::'
+], function () {
+    Route::get('/', 'NewsController@rubrics')
+        ->name('rubrics');
+
+    Route::get('/{name}', 'NewsController@rubricsNews')
+        ->name('rubricsNews')
+        ->where('name', '[A-Za-z]+');
+
+    Route::get('/{name}/{title}', 'NewsController@cardNews')
+        ->name('cardNews')
+        ->where('name', '[A-Za-z]+');
 });
+
+Route::get('/auth', 'AuthController@index')
+    ->name('auth');
