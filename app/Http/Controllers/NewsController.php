@@ -44,6 +44,19 @@ class NewsController extends Controller
 
     public function cardNews($name, $title)
     {
-        return view('news.cardNews', ['title' => $title, 'item' => $this->news[$name][$title]]);
+        return view('news.cardNews', [
+            'title' => $title,
+            'name' => $name,
+            'item' => $this->news[$name][$title],
+            'comments' => (new CommentsController())->getComment()
+        ]);
+    }
+
+    public function getRubrics() {
+        return $this->rubrics;
+    }
+
+    public function getNews() {
+        return $this->news;
     }
 }
