@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+
 Route::get('/', 'HomeController@index')
     ->name('home');
 
@@ -32,3 +34,6 @@ Route::group([
 
 Route::get('/auth', 'AuthController@index')
     ->name('auth');
+
+Route::match(['get', 'post'], '/addComments', 'CommentsController@addComment')
+    ->name('comments');
