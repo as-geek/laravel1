@@ -23,13 +23,13 @@ Route::group([
     Route::get('/', 'NewsController@rubrics')
         ->name('rubrics');
 
-    Route::get('/{name}', 'NewsController@rubricsNews')
+    Route::get('/{rubricsId}', 'NewsController@rubricsNews')
         ->name('rubricsNews')
-        ->where('name', '[A-Za-z]+');
+        ->where('rubricsId', '[0-9]+');
 
-    Route::get('/{name}/{title}', 'NewsController@cardNews')
+    Route::get('/{rubricsId}/{id}', 'NewsController@cardNews')
         ->name('cardNews')
-        ->where('name', '[A-Za-z]+');
+        ->where('id', '[0-9]+');
 });
 
 Route::get('/auth', 'AuthController@index')

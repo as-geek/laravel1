@@ -6,25 +6,31 @@ use Illuminate\Http\Request;
 
 class CommentsController extends Controller
 {
-    private $comments = [
-        'Саша' => 'Тест'
-    ];
-
     public function addComment(Request $request)
     {
         if ($request->isMethod('post')) {
 
-            $comments[$request->post('userName')] = $request->post('text');
+            $name = $request->post('userName');
+            $content = $request->post('text');
+            $rubricsId = $request->post('rubricsId');
+            $newsId = $request->post('newsId');
+            $sql = "
+                INSERT INTO
+                    comments (name, content, news_id)
+                VALUES
+                    (:name, :content, :news_id);
+            ";
+
+            $addComment = \DB::statement($sql, [
+                ':name' => $name,
+                ':content' => $content,
+                ':news_id' => $newsId
+            ]);
 
             return redirect()->route('news::cardNews', [
-                'name' => $request->post('name'),
-                'title' => $request->post('title'),
-                'comments' => $this->comments
+                'rubricsId' => $rubricsId,
+                'id' => $newsId
             ]);
         }
-    }
-
-    public function getComment() {
-        return $this->comments;
     }
 }

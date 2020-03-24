@@ -14,8 +14,8 @@
 </nav>
 <section>
     @yield('content')
-    @yield('comments')
     @yield('addComment')
+    @yield('comments')
 </section>
 </body>
 </html>
