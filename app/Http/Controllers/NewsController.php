@@ -6,57 +6,41 @@ use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
-    private $rubrics = [
-        'politics' => 'Политика',
-        'business' => 'Бизнес',
-        'sports' => 'Спорт',
-        'games' => 'Игры'
-    ];
-
-    private $news = [
-        'politics' => [
-            'Title1' => 'Text1',
-            'Title2' => 'Text2'
-        ],
-        'business' => [
-            'Title3' => 'Text3',
-            'Title4' => 'Text4'
-        ],
-        'sports' => [
-            'Title5' => 'Text5',
-            'Title6' => 'Text6'
-        ],
-        'games' => [
-            'Title7' => 'Text7',
-            'Title8' => 'Text8'
-        ]
-    ];
-
     public function rubrics()
     {
-        return view('news.rubrics', ['rubrics' => $this->rubrics]);
+        $sql = 'SELECT * FROM rubrics ORDER BY id';
+        $rubrics = \DB::select($sql);
+
+        return view('news.rubrics', ['rubrics' => $rubrics]);
     }
 
-    public function rubricsNews($name)
+    public function rubricsNews($rubricsId)
     {
-        return view('news.rubricsNews', ['rubricsNews' => $this->news[$name], 'name' => $name]);
+        $sql = 'SELECT id, title, rubrics_id FROM news WHERE rubrics_id = :rubrics_id';
+        $rubricsNews = \DB::select($sql, [':rubrics_id' => $rubricsId]);
+
+        return view('news.rubricsNews', ['rubricsNews' => $rubricsNews]);
     }
 
-    public function cardNews($name, $title)
+    public function cardNews($rubricsId, $id)
     {
+        $sqlNews = 'SELECT id, title, content, rubrics_id FROM news WHERE id = :id';
+        $news = \DB::select($sqlNews, [':id' => $id]);
+
+        $sqlComments = '
+            SELECT
+                n.id, c.name, c.content
+            FROM
+                 news n
+            JOIN comments c ON n.id = c.news_id
+            WHERE n.id = :id
+            ORDER BY c.created_at DESC
+        ';
+        $comments = \DB::select($sqlComments, [':id' => $id]);
+
         return view('news.cardNews', [
-            'title' => $title,
-            'name' => $name,
-            'item' => $this->news[$name][$title],
-            'comments' => (new CommentsController())->getComment()
+            'news' => $news,
+            'comments' => $comments,
         ]);
-    }
-
-    public function getRubrics() {
-        return $this->rubrics;
-    }
-
-    public function getNews() {
-        return $this->news;
     }
 }
