@@ -19,12 +19,15 @@ class CreateCommentsTable extends Migration
             $table->string('name', 50);
             $table->text('content');
             $table->unsignedBigInteger('news_id');
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
+            $table->dateTime('publish_date')->useCurrent();
+            $table->timestamps();
 
             $table->foreign('news_id')
                 ->references('id')
-                ->on('news');
+                ->on('news')
+                ->onDelete('cascade');
+
+            $table->index('news_id');
         });
     }
 

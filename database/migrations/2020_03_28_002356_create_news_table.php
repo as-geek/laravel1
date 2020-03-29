@@ -16,16 +16,18 @@ class CreateNewsTable extends Migration
         Schema::dropIfExists('news');
         Schema::create('news', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('title', 50)
-                ->index();
+            $table->string('title', 50);
             $table->text('content');
             $table->unsignedBigInteger('rubrics_id');
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
+            $table->dateTime('publish_date')->useCurrent();
+            $table->timestamps();
 
             $table->foreign('rubrics_id')
                 ->references('id')
-                ->on('rubrics');
+                ->on('rubrics')
+                ->onDelete('cascade');
+
+            $table->index('rubrics_id');
         });
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comments;
 use Illuminate\Http\Request;
 
 class CommentsController extends Controller
@@ -9,28 +10,11 @@ class CommentsController extends Controller
     public function addComment(Request $request)
     {
         if ($request->isMethod('post')) {
+            $model = new Comments();
+            $model->fill($request->all());
+            $model->save();
 
-            $name = $request->post('userName');
-            $content = $request->post('text');
-            $rubricsId = $request->post('rubricsId');
-            $newsId = $request->post('newsId');
-            $sql = "
-                INSERT INTO
-                    comments (name, content, news_id)
-                VALUES
-                    (:name, :content, :news_id);
-            ";
-
-            $addComment = \DB::statement($sql, [
-                ':name' => $name,
-                ':content' => $content,
-                ':news_id' => $newsId
-            ]);
-
-            return redirect()->route('news::cardNews', [
-                'rubricsId' => $rubricsId,
-                'id' => $newsId
-            ]);
+            return redirect()->route('news::cardNews', ['id' => $model->news_id]);
         }
     }
 }

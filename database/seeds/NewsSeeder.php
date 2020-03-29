@@ -20,13 +20,14 @@ class NewsSeeder extends Seeder
     {
         $faker = \Faker\Factory::create('ru_RU');
         $data = [];
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 30; $i++) {
             $data[] = [
                 'title' => $faker->realText(rand(10, 50)),
                 'content' => $faker->realText(1000),
                 'rubrics_id' => $faker->numberBetween($min = 1, $max = 4),
-                'created_at' => $faker->date('Y-m-d'),
-                'updated_at' => $faker->date('Y-m-d'),
+                'publish_date' => $faker->dateTime(),
+                'created_at' => $faker->dateTime(),
+                'updated_at' => $faker->dateTime(),
             ];
         }
         return $data;
