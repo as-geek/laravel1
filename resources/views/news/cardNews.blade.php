@@ -13,13 +13,18 @@
 
 @section('addComment')
     <hr>
+    @if($errors->any())
+        @foreach($errors->all() as $error)
+            {{$error}}
+        @endforeach
+    @endif
     <form action="{{route('comments')}}" method="post">
         @csrf
-        <input type="text" name="name" placeholder="Имя">
-        <textarea name="content" cols="30" rows="10"></textarea>
+        <input type="text" name="name" placeholder="Имя" value="{{old('name')}}">
+        <textarea name="content" cols="30" rows="10">{{old('content')}}</textarea>
         <input type="hidden" name="rubricsId" value={{$value->rubrics_id}}>
         <input type="hidden" name="news_id" value={{$value->id}}>
-        <input type="submit">
+        <input type="submit" value="Сохранить">
     </form>
 @endsection
 

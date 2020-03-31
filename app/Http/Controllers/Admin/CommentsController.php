@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\AdminCommentsRequest;
 use App\Models\Comments;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class CommentsController extends Controller
@@ -13,21 +13,21 @@ class CommentsController extends Controller
         return view('admin.comments.index', ['comments' => Comments::getCommentsAll()]);
     }
 
-    public function update($id, Request $request)
+    public function update($id)
     {
-        if ($request->isMethod('post'))
-        {
-            /** @var Comments $comments */
-            $comments = Comments::find($id);
-            $comments->fill($request->all());
-            $comments->save();
-
-            return redirect()->route('admin::comments::index');
-        }
-
         return view('admin.comments.update', [
             'commentsItem' => Comments::getCommentsItem($id)->first(),
         ]);
+    }
+
+    public function saveUpdate($id, AdminCommentsRequest $request)
+    {
+        /** @var Comments $comments */
+        $comments = Comments::find($id);
+        $comments->fill($request->all());
+        $comments->save();
+
+        return redirect()->route('admin::comments::index');
     }
 
     public function delete($id)

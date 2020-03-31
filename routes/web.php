@@ -55,11 +55,17 @@ Route::group([
     Route::get('/', 'NewsController@index')
         ->name('index');
 
-    Route::match(['get', 'post'],'/create', 'NewsController@create')
+    Route::get('/create', 'NewsController@create')
         ->name('create');
 
-    Route::match(['get', 'post'],'/update/{id}', 'NewsController@update')
+    Route::post('/saveCreate', 'NewsController@saveCreate')
+        ->name('saveCreate');
+
+    Route::get('/update/{id}', 'NewsController@update')
         ->name('update');
+
+    Route::post('/saveUpdate/{id}', 'NewsController@saveUpdate')
+        ->name('saveUpdate');
 
     Route::get('/delete/{id}', 'NewsController@delete')
         ->name('delete');
@@ -76,8 +82,11 @@ Route::group([
     Route::get('/', 'CommentsController@index')
         ->name('index');
 
-    Route::match(['get', 'post'],'/update/{id}', 'CommentsController@update')
+    Route::get('/update/{id}', 'CommentsController@update')
         ->name('update');
+
+    Route::post('/saveUpdate/{id}', 'CommentsController@saveUpdate')
+        ->name('saveUpdate');
 
     Route::get('/delete/{id}', 'CommentsController@delete')
         ->name('delete');
@@ -91,5 +100,5 @@ Route::get('/auth', 'AuthController@index')
 /**
  * Добавление комментариев
  */
-Route::match(['get', 'post'], '/addComments', 'CommentsController@addComment')
+Route::post('/addComments', 'CommentsController@addComment')
     ->name('comments');
