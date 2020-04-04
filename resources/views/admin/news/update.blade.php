@@ -5,9 +5,14 @@
 @endsection
 
 @section('content')
+    @if($errors->any())
+        @foreach($errors->all() as $error)
+            {{$error}}
+        @endforeach
+    @endif
     <h3>Редактор</h3>
     <hr>
-    <form action="{{route('admin::news::update', ['id' => $cardNews->id])}}" method="post">
+    <form action="{{route('admin::news::saveUpdate', ['id' => $cardNews->id])}}" method="post">
         @csrf
         <input type="text" name="title" value="{{$cardNews->title}}">
         <textarea name="content" cols="50" rows="20">{{$cardNews->content}}</textarea>
