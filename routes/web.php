@@ -13,27 +13,92 @@
 
 use Illuminate\Support\Facades\Route;
 
+/**
+ * Главная страница
+ */
 Route::get('/', 'HomeController@index')
     ->name('home');
 
+/**
+ * Новости
+ */
 Route::group([
-    'prefix' => '/news/rubrics',
+    'prefix' => '/news',
     'as' => 'news::'
 ], function () {
-    Route::get('/', 'NewsController@rubrics')
+    Route::get('/rubrics', 'NewsController@rubrics')
         ->name('rubrics');
 
-    Route::get('/{rubricsId}', 'NewsController@rubricsNews')
-        ->name('rubricsNews')
+    Route::get('/rubrics/{rubricsId}', 'NewsController@listNews')
+        ->name('listNews')
         ->where('rubricsId', '[0-9]+');
 
-    Route::get('/{rubricsId}/{id}', 'NewsController@cardNews')
+    Route::get('/card/{id}', 'NewsController@cardNews')
         ->name('cardNews')
         ->where('id', '[0-9]+');
 });
 
+/**
+ * Меню Админки
+ */
+Route::get('/admin', 'Admin\HomeController@menu')
+    ->name('admin');
+
+/**
+ * Админка новостей
+ */
+Route::group([
+    'prefix' => '/admin/news',
+    'namespace' => 'Admin',
+    'as' => 'admin::news::'
+], function(){
+    Route::get('/', 'NewsController@index')
+        ->name('index');
+
+    Route::get('/create', 'NewsController@create')
+        ->name('create');
+
+    Route::post('/saveCreate', 'NewsController@saveCreate')
+        ->name('saveCreate');
+
+    Route::get('/update/{id}', 'NewsController@update')
+        ->name('update');
+
+    Route::post('/saveUpdate/{id}', 'NewsController@saveUpdate')
+        ->name('saveUpdate');
+
+    Route::get('/delete/{id}', 'NewsController@delete')
+        ->name('delete');
+});
+
+/**
+ * Админка комментариев
+ */
+Route::group([
+    'prefix' => '/admin/comments',
+    'namespace' => 'Admin',
+    'as' => 'admin::comments::'
+], function(){
+    Route::get('/', 'CommentsController@index')
+        ->name('index');
+
+    Route::get('/update/{id}', 'CommentsController@update')
+        ->name('update');
+
+    Route::post('/saveUpdate/{id}', 'CommentsController@saveUpdate')
+        ->name('saveUpdate');
+
+    Route::get('/delete/{id}', 'CommentsController@delete')
+        ->name('delete');
+});
+/**
+ * Авторизация
+ */
 Route::get('/auth', 'AuthController@index')
     ->name('auth');
 
-Route::match(['get', 'post'], '/addComments', 'CommentsController@addComment')
+/**
+ * Добавление комментариев
+ */
+Route::post('/addComments', 'CommentsController@addComment')
     ->name('comments');

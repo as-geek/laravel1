@@ -7,7 +7,7 @@
 @section('content')
     @foreach($rubrics as $value)
         <div>
-            <a href='{{route('news::rubricsNews', ['rubricsId' => $value->id])}}'>{{$value->name}}</a>
+            <a href='{{route('news::listNews', ['rubricsId' => $value->id])}}'>{{$value->name}}</a>
         </div>
     @endforeach
 @endsection
