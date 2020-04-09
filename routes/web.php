@@ -39,66 +39,104 @@ Route::group([
 });
 
 /**
+ * Профиль пользователя
+ */
+Route::group([
+    'prefix' => '/profile',
+    'as' => 'profile::',
+    'middleware' => ['auth']
+], function () {
+    Route::get('/', 'ProfileController@index')
+        ->name('index');
+
+    Route::get('/update', 'ProfileController@update')
+        ->name('update');
+
+    Route::post('/saveUpdate', 'ProfileController@saveUpdate')
+        ->name('saveUpdate')
+        ->middleware('hashPassword.check')
+        ->middleware('profilePassword.validate');
+});
+
+/**
  * Меню Админки
  */
 Route::get('/admin', 'Admin\HomeController@menu')
-    ->name('admin');
+    ->name('admin')
+    ->middleware('auth')
+    ->middleware('isAdmin.check');
 
 /**
- * Админка новостей
+ * Админка
  */
 Route::group([
-    'prefix' => '/admin/news',
+    'prefix' => '/admin',
     'namespace' => 'Admin',
-    'as' => 'admin::news::'
-], function(){
-    Route::get('/', 'NewsController@index')
-        ->name('index');
+    'as' => 'admin::',
+    'middleware' => ['auth', 'isAdmin.check']
+], function() {
+    Route::group([
+        'prefix' => '/news',
+        'as' => 'news::',
+    ], function () {
+        Route::get('/', 'NewsController@index')
+            ->name('index');
 
-    Route::get('/create', 'NewsController@create')
-        ->name('create');
+        Route::get('/create', 'NewsController@create')
+            ->name('create');
 
-    Route::post('/saveCreate', 'NewsController@saveCreate')
-        ->name('saveCreate');
+        Route::post('/saveCreate', 'NewsController@saveCreate')
+            ->name('saveCreate')
+            ->middleware('news.validate');
 
-    Route::get('/update/{id}', 'NewsController@update')
-        ->name('update');
+        Route::get('/update/{id}', 'NewsController@update')
+            ->name('update');
 
-    Route::post('/saveUpdate/{id}', 'NewsController@saveUpdate')
-        ->name('saveUpdate');
+        Route::post('/saveUpdate/{id}', 'NewsController@saveUpdate')
+            ->name('saveUpdate')
+            ->middleware('news.validate');
 
-    Route::get('/delete/{id}', 'NewsController@delete')
-        ->name('delete');
+        Route::get('/delete/{id}', 'NewsController@delete')
+            ->name('delete');
+    });
+    Route::group([
+        'prefix' => '/comments',
+        'as' => 'comments::',
+    ], function () {
+        Route::get('/', 'CommentsController@index')
+            ->name('index');
+
+        Route::get('/update/{id}', 'CommentsController@update')
+            ->name('update');
+
+        Route::post('/saveUpdate/{id}', 'CommentsController@saveUpdate')
+            ->name('saveUpdate')
+            ->middleware('comments.validate');
+
+        Route::get('/delete/{id}', 'CommentsController@delete')
+            ->name('delete');
+    });
+    Route::group([
+        'prefix' => '/profile',
+        'as' => 'profile::',
+    ], function () {
+        Route::get('/', 'ProfileController@index')
+            ->name('index');
+
+        Route::get('/update/{id}', 'ProfileController@update')
+            ->name('update');
+
+        Route::post('/saveUpdate/{id}', 'ProfileController@saveUpdate')
+            ->name('saveUpdate');
+    });
 });
-
-/**
- * Админка комментариев
- */
-Route::group([
-    'prefix' => '/admin/comments',
-    'namespace' => 'Admin',
-    'as' => 'admin::comments::'
-], function(){
-    Route::get('/', 'CommentsController@index')
-        ->name('index');
-
-    Route::get('/update/{id}', 'CommentsController@update')
-        ->name('update');
-
-    Route::post('/saveUpdate/{id}', 'CommentsController@saveUpdate')
-        ->name('saveUpdate');
-
-    Route::get('/delete/{id}', 'CommentsController@delete')
-        ->name('delete');
-});
-/**
- * Авторизация
- */
-Route::get('/auth', 'AuthController@index')
-    ->name('auth');
 
 /**
  * Добавление комментариев
  */
 Route::post('/addComments', 'CommentsController@addComment')
-    ->name('comments');
+    ->name('comments')
+    ->middleware('comments.validate');
+
+Auth::routes();
+

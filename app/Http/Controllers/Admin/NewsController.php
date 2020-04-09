@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\AdminNewsRequest;
 use App\Models\News;
 use App\Models\Rubrics;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
@@ -19,7 +19,7 @@ class NewsController extends Controller
         return view('admin.news.create', ['rubrics' => Rubrics::getRubrics()]);
     }
 
-    public function saveCreate(AdminNewsRequest $request)
+    public function saveCreate(Request $request)
     {
         $news = new News();
         $news->fill($request->all());
@@ -36,7 +36,7 @@ class NewsController extends Controller
         ]);
     }
 
-    public function saveUpdate($id, AdminNewsRequest $request)
+    public function saveUpdate($id, Request $request)
     {
         /** @var News $news */
         $news = News::find($id);

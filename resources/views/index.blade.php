@@ -5,5 +5,9 @@
 @endsection
 
 @section('content')
-    <h3>Всем привет</h3>
+    @guest
+        <h3>Всем привет</h3>
+    @else
+        <h3>Привет, {{$user->name}}</h3>
+    @endguest
 @endsection
