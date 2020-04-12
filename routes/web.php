@@ -36,6 +36,9 @@ Route::group([
     Route::get('/card/{id}', 'NewsController@cardNews')
         ->name('cardNews')
         ->where('id', '[0-9]+');
+
+    Route::get('/partner', 'PartnerNewsController@index')
+        ->name('partner');
 });
 
 /**
@@ -139,4 +142,16 @@ Route::post('/addComments', 'CommentsController@addComment')
     ->middleware('comments.validate');
 
 Auth::routes();
+
+//Соцсети
+Route::group([
+    'prefix' => 'social',
+    'namespace' => 'Auth',
+    'as' => 'social::',
+], function () {
+    Route::get('/login', 'SocialController@loginVk')
+        ->name('login-vk');
+    Route::get('/response', 'SocialController@responseVk')
+        ->name('response-vk');
+});
 
