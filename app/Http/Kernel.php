@@ -2,6 +2,11 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CheckHashPassword;
+use App\Http\Middleware\CheckIsAdmin;
+use App\Http\Middleware\ValidateComments;
+use App\Http\Middleware\ValidateNews;
+use App\Http\Middleware\ValidateProfilePassword;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -60,6 +65,11 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'news.validate' => ValidateNews::class,
+        'comments.validate' => ValidateComments::class,
+        'profilePassword.validate' => ValidateProfilePassword::class,
+        'hashPassword.check' => CheckHashPassword::class,
+        'isAdmin.check' => CheckIsAdmin::class,
     ];
 
     /**

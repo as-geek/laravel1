@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AdminCommentsRequest;
 use App\Models\Comments;
+use Illuminate\Http\Request;
 
 class CommentsController extends Controller
 {
-    public function addComment(AdminCommentsRequest $request)
+    public function addComment(Request $request)
     {
         $model = new Comments();
         $model->fill($request->all());

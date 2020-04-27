@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\AdminCommentsRequest;
 use App\Models\Comments;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class CommentsController extends Controller
 {
@@ -20,7 +20,7 @@ class CommentsController extends Controller
         ]);
     }
 
-    public function saveUpdate($id, AdminCommentsRequest $request)
+    public function saveUpdate($id, Request $request)
     {
         /** @var Comments $comments */
         $comments = Comments::find($id);
