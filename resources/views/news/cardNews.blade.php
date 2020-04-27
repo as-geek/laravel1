@@ -7,7 +7,7 @@
 @section('content')
     @foreach($news as $value)
         <h3>{{$value->title}}</h3>
-        <p>{{$value->content}}</p>
+        <p>{!! $value->content !!}</p>
     @endforeach
 @endsection
 

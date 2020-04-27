@@ -12,7 +12,7 @@
         <a href="{{route('admin::news::delete', ['id' => $item->id])}}">Удалить</a>
         <hr>
     @empty
-        Новостей в нет!
+        Новостей нет!
     @endforelse
     {{$news->links()}}
 @endsection

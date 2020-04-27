@@ -13,7 +13,7 @@
         <a href="{{route('admin::comments::delete', ['id' => $item->id])}}">Удалить</a>
         <hr>
     @empty
-        Комментариев в нет!
+        Комментариев нет!
     @endforelse
     {{$comments->links()}}
 @endsection

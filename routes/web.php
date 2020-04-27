@@ -37,8 +37,14 @@ Route::group([
         ->name('cardNews')
         ->where('id', '[0-9]+');
 
-    Route::get('/partner', 'PartnerNewsController@index')
-        ->name('partner');
+    Route::get('/partner', 'PartnerNewsController@partnerRubrics')
+        ->name('partnerRubrics');
+
+    Route::get('/partner/list', 'PartnerNewsController@listPartnerNews')
+        ->name('listPartnerNews');
+
+    Route::get('/parsing/{rubrics}', 'PartnerNewsController@parsing')
+        ->name('parsing');
 });
 
 /**
@@ -131,6 +137,28 @@ Route::group([
 
         Route::post('/saveUpdate/{id}', 'ProfileController@saveUpdate')
             ->name('saveUpdate');
+    });
+    Route::group([
+        'prefix' => '/partner',
+        'as' => 'partner::',
+    ], function () {
+        Route::get('/', 'PartnerNewsController@index')
+            ->name('index');
+
+        Route::get('/create', 'PartnerNewsController@create')
+            ->name('create');
+
+        Route::post('/saveCreate', 'PartnerNewsController@saveCreate')
+            ->name('saveCreate');
+
+        Route::get('/update/{id}', 'PartnerNewsController@update')
+            ->name('update');
+
+        Route::post('/saveUpdate/{id}', 'PartnerNewsController@saveUpdate')
+            ->name('saveUpdate');
+
+        Route::get('/delete/{id}', 'PartnerNewsController@delete')
+            ->name('delete');
     });
 });
 

@@ -2,23 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Admin\ParserController;
 use App\Models\PartnerNews;
+use App\Models\PartnerResources;
 
 class PartnerNewsController extends Controller
 {
-    public function index()
+    public function partnerRubrics()
     {
-        $data = (new ParserController())->index();
-
-        PartnerNews::deletePartnerNews();
-
-        foreach ($data['news'] as $value) {
-            $news = new PartnerNews();
-            $news->fill($value);
-            $news->save();
-        }
-
-        return view('partner.index', ['news' => PartnerNews::all()]);
+        return view('partner.rubrics', ['rubrics' => PartnerResources::getRubrics()]);
     }
+
+    public function parsing($rubrics, ParserController $parserController)
+    {
+        $parserController->index($rubrics);
+    }
+
+    public function listPartnerNews()
+    {
+        return view('partner.listNews', ['listPartnerNews' => PartnerNews::all()]);
+    }
+
 }
