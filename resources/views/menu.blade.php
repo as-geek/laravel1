@@ -2,7 +2,7 @@
     <ul>
         <li><a href="{{route('home')}}">Главная</a></li>
         <li><a href="{{route('news::rubrics')}}">Новости</a></li>
-        <li><a href="{{route('news::partner')}}">Новости партнёров</a></li>
+        <li><a href="{{route('news::partnerRubrics')}}">Новости партнёров</a></li>
         @guest
             <li><a href="{{route('login')}}">Вход</a></li>
             <li><a href="{{route('social::login-vk')}}">Вход через VK</a></li>

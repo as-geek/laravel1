@@ -15,7 +15,7 @@
     <form action="{{route('admin::news::saveCreate')}}" method="post">
         @csrf
         <input type="text" name="title" placeholder="Заголовок" value="{{old('title')}}">
-        <textarea name="content" cols="30" rows="10">{{old('content')}}</textarea>
+        <textarea name="content" id="news-content" cols="30" rows="10">{{old('content')}}</textarea>
         <select name="rubrics_id">
             @foreach($rubrics as $value)
                 @if($value->id == old('rubrics_id'))
@@ -29,4 +29,15 @@
         ("+3 hours"))}}">
         <input type="submit" value="Создать">
     </form>
+    <script src="//cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
+    <script>
+        var options = {
+            filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',
+            filebrowserImageUploadUrl: '/laravel-filemanager/upload?type=Images&_token={{csrf_token()}}',
+            filebrowserBrowseUrl: '/laravel-filemanager?type=Files',
+            filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token={{csrf_token()}}'
+        };
+
+        CKEDITOR.replace('news-content', options);
+    </script>
 @endsection

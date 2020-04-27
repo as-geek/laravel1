@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    @foreach($news as $item)
+    @foreach($listPartnerNews as $item)
         <h3>{{$item->title}}</h3>
         <p>{{$item->description}}</p>
         <a href="{{$item->link}}">Подробнее...</a>
